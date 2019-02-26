@@ -1,5 +1,9 @@
 function opbash_signin() {
-    eval $(op signin my)
+    op list templates >> /dev/null 2>&1
+    if [[ $? -ne 0 ]]
+    then
+        eval $(op signin my)
+    fi
 }
 
 function opbash_get_names() {
@@ -14,9 +18,7 @@ function opbash_get_entry() {
 }
 
 function oppw() {
-    if [[ -z "$OP_SESSION_my" ]]; then
-        opbash_signin
-    fi
+    opbash_signin
     opname=$(opbash_get_names | fzf)
     opbash_get_entry "$opname"
 }
